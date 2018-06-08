@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="深度学习开发环境准备配置 硬件 主机：Dell XPS 15 9550 CPU：i7-6700HQ @ 2.60GHz GPU 1：Intel(R) HD Graphics 530 GPU 2：NVIDIA GeForce GTX 960M 内存：16GB 硬盘：265G SSD + 1TB 机械硬盘   软件 操作系统：Windows 10 教育版    CUDACUDA官网 下载地址 目标平台">
+<meta name="keywords" content="学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习：开发环境准备">
+<meta property="og:url" content="https://yunfengbo.github.io/blog/2018/04/08/DeepLearm_1_env/index.html">
+<meta property="og:site_name" content="薄云峰的博客">
+<meta property="og:description" content="深度学习开发环境准备配置 硬件 主机：Dell XPS 15 9550 CPU：i7-6700HQ @ 2.60GHz GPU 1：Intel(R) HD Graphics 530 GPU 2：NVIDIA GeForce GTX 960M 内存：16GB 硬盘：265G SSD + 1TB 机械硬盘   软件 操作系统：Windows 10 教育版    CUDACUDA官网 下载地址 目标平台">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-12T11:23:45.720Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度学习：开发环境准备">
+<meta name="twitter:description" content="深度学习开发环境准备配置 硬件 主机：Dell XPS 15 9550 CPU：i7-6700HQ @ 2.60GHz GPU 1：Intel(R) HD Graphics 530 GPU 2：NVIDIA GeForce GTX 960M 内存：16GB 硬盘：265G SSD + 1TB 机械硬盘   软件 操作系统：Windows 10 教育版    CUDACUDA官网 下载地址 目标平台">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yunfengbo.github.io/blog/2018/04/08/DeepLearm_1_env/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>深度学习：开发环境准备 | 薄云峰的博客</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0198afdd6331d7904c7649687f816953";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">薄云峰的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">记录生活和工作的点滴</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Startseite</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/blog/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />Über</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags<span class="badge">3</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Kategorien<span class="badge">0</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archiv<span class="badge">6</span></a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yunfengbo.github.io/blog/blog/2018/04/08/DeepLearm_1_env/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jim Bo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="薄云峰的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深度学习：开发环境准备
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+
+              
+                
+              
+
+              <time title="Post created: 2018-04-08 11:53:07" itemprop="dateCreated datePublished" datetime="2018-04-08T11:53:07+08:00">2018-04-08</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h1><h2 id="开发环境准备"><a href="#开发环境准备" class="headerlink" title="开发环境准备"></a>开发环境准备</h2><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><ul>
+<li>硬件<ul>
+<li>主机：Dell XPS 15 9550</li>
+<li>CPU：i7-6700HQ @ 2.60GHz</li>
+<li>GPU 1：Intel(R) HD Graphics 530</li>
+<li>GPU 2：NVIDIA GeForce GTX 960M</li>
+<li>内存：16GB</li>
+<li>硬盘：265G SSD + 1TB 机械硬盘</li>
+</ul>
+</li>
+<li>软件<ul>
+<li>操作系统：Windows 10 教育版</li>
+</ul>
+</li>
+</ul>
+<h3 id="CUDA"><a href="#CUDA" class="headerlink" title="CUDA"></a>CUDA</h3><p>CUDA官网 <a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="noopener">下载地址</a></p>
+<h4 id="目标平台："><a href="#目标平台：" class="headerlink" title="目标平台："></a>目标平台：</h4><p>Windows + x86_64 + 10 + exe(local)</p>
+<h4 id="下载："><a href="#下载：" class="headerlink" title="下载："></a>下载：</h4><ul>
+<li>Base Installer</li>
+<li>Patch 1 (Released Jan 25, 2018)</li>
+<li>Patch 2 (Released Feb 27, 2018)</li>
+<li>Patch 3 (Released Mar 5, 2018)</li>
+</ul>
+<p>分别安装。<br>安装目录位于：C:\Program Files\NVIDIA GPU Computing Toolkit</p>
+<h3 id="cuDNN"><a href="#cuDNN" class="headerlink" title="cuDNN"></a>cuDNN</h3><p>cuDNN的全称为NVIDIA CUDA® Deep Neural Network library，是NVIDIA专门针对深度神经网络（Deep Neural Networks）中的基础操作而设计基于GPU的加速库。cuDNN为深度神经网络中的标准流程提供了高度优化的实现方式，例如convolution、pooling、normalization以及activation layers的前向以及后向过程。</p>
+<p>基本上所有的深度学习框架都支持cuDNN这一加速工具，例如：Caffe、Caffe2、TensorFlow、Torch、Pytorch、Theano等。</p>
+<p>Caffe可以通过修改Makefile.config中的相应选项来修改是否在编译Caffe的过程中编译cuDNN，如果没有编译cuDNN的话，执行一些基于Caffe这一深度学习框架的程序速度上要慢3-5倍（Caffe官网上说不差多少，明明差很多嘛）。Caffe对cuDNN的版本不是很严格，只要大于cuDNN 4就可以。</p>
+<p>TensorFlow目前的版本r1.2，强行要求装cuDNN，而且对版本也有相应的限制（cuDNN 5.1）。不过就官方说明看，TensorFlow将在下一个版本r1.3中加入对cuDNN 6.0的支持。</p>
+<p>Torch通过LuaJit可以自动检测目前系统中的cuDNN版本来进行相应的编译（如没有cuDNN，也可在进行Torch的安装）。</p>
+<h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p><a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">下载地址</a><br><a href="https://developer.nvidia.com/cudnn（需要注册或登录，然后还要填一个调查问卷）" target="_blank" rel="noopener">https://developer.nvidia.com/cudnn（需要注册或登录，然后还要填一个调查问卷）</a><br>下载后，解压到 CUDA 目录下即可。</p>
+<h3 id="TensorFlow"><a href="#TensorFlow" class="headerlink" title="TensorFlow"></a>TensorFlow</h3><p>创建一个虚拟环境，然后安装TensorFlow<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python -m virtualenv env_ml</span><br><span class="line">env_ml\Scripts\activate.bat</span><br><span class="line">pip install tensorflow</span><br></pre></td></tr></table></figure></p>
+<p>安装过程有点慢，需要一点耐心。</p>
+<p>如果系统中安装了 CUDA （写此文档时，tensorflow 的版本为 1.6.0 ，需要CUDA的版本为 9.0），可以安装tensorflow的GPU版本：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow-gpu</span><br></pre></td></tr></table></figure></p>
+<p>此外，还需要安装一些可选的库（根据需要来）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install scipy numpy matplotlib</span><br></pre></td></tr></table></figure></p>
+<h3 id="Theano"><a href="#Theano" class="headerlink" title="Theano"></a>Theano</h3><p>注意：Theano需要使用 g++，在windows下，可能需要设置为其它 C++ 编译器。<br>安装，在python虚拟环境中：<br>···bash<br>pip install theano<br>···</p>
+<h3 id="Keras"><a href="#Keras" class="headerlink" title="Keras"></a>Keras</h3><p>安装，在python虚拟环境中：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install keras</span><br></pre></td></tr></table></figure></p>
+<p>检查一下安装是否成功：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(python) λ python</span><br><span class="line">Python 3.6.4 (v3.6.4:d48eceb, Dec 19 2017, 06:54:40) [MSC v.1900 64 bit (AMD64)] on win32</span><br><span class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> or <span class="string">"license"</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; import keras</span><br><span class="line">Using TensorFlow backend.</span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span>(keras.__version__)</span><br><span class="line">2.1.5</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a>PyTorch</h3><p>目前PyTorch还不支持自动下载安装，需要下载文件 torch-0.3.0b0+591e73e-cp36-cp36m-win_amd64.whl<br>下载后，执行安装命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install torch-0.3.0b0+591e73e-cp36-cp36m-win_amd64.whl</span><br></pre></td></tr></table></figure></p>
+<p>检查一下安装是否成功，顺便检查一下GPU（CUDA）是否可用：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import torch</span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span>(torch.cuda.is_available())</span><br><span class="line">True</span><br></pre></td></tr></table></figure></p>
+<h3 id="scikit-learn"><a href="#scikit-learn" class="headerlink" title="scikit-learn"></a>scikit-learn</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install scikit-learn scikit-image</span><br></pre></td></tr></table></figure>
+<h2 id="摄像头和图像识别"><a href="#摄像头和图像识别" class="headerlink" title="摄像头和图像识别"></a>摄像头和图像识别</h2><h3 id="安装-opencv"><a href="#安装-opencv" class="headerlink" title="安装 opencv"></a>安装 opencv</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install opencv-python</span><br></pre></td></tr></table></figure>
+<h3 id="安装-torchvision"><a href="#安装-torchvision" class="headerlink" title="安装 torchvision"></a>安装 torchvision</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install torchvision</span><br></pre></td></tr></table></figure>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="安装pyyaml时，出现错误（UnicodeDecodeError）"><a href="#安装pyyaml时，出现错误（UnicodeDecodeError）" class="headerlink" title="安装pyyaml时，出现错误（UnicodeDecodeError）"></a>安装pyyaml时，出现错误（UnicodeDecodeError）</h3><p>注意，在 win10 环境下，安装 Keras 或 PyTorch 时，会自动先安装pyyaml，此时，会出现错误（UnicodeDecodeError）：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">(python) λ pip install keras</span><br><span class="line">Collecting keras</span><br><span class="line">  Using cached Keras-2.1.5-py2.py3-none-any.whl</span><br><span class="line">Requirement already satisfied: numpy&gt;=1.9.1 <span class="keyword">in</span> d:\home\ml\python\lib\site-packages (from keras)</span><br><span class="line">Requirement already satisfied: scipy&gt;=0.14 <span class="keyword">in</span> d:\home\ml\python\lib\site-packages (from keras)</span><br><span class="line">Collecting pyyaml (from keras)</span><br><span class="line">  Using cached PyYAML-3.12.tar.gz</span><br><span class="line">Requirement already satisfied: six&gt;=1.9.0 <span class="keyword">in</span> d:\home\ml\python\lib\site-packages (from keras)</span><br><span class="line">Building wheels <span class="keyword">for</span> collected packages: pyyaml</span><br><span class="line">  Running setup.py bdist_wheel <span class="keyword">for</span> pyyaml ... error</span><br><span class="line">  Failed building wheel <span class="keyword">for</span> pyyaml</span><br><span class="line">  Running setup.py clean <span class="keyword">for</span> pyyaml</span><br><span class="line">Failed to build pyyaml</span><br><span class="line">Installing collected packages: pyyaml, keras</span><br><span class="line">  Running setup.py install <span class="keyword">for</span> pyyaml ... error</span><br><span class="line">Exception:</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"d:\home\ml\python\lib\site-packages\pip\compat\__init__.py"</span>, line 73, <span class="keyword">in</span> console_to_str</span><br><span class="line">    <span class="built_in">return</span> s.decode(sys.__stdout__.encoding)</span><br><span class="line">UnicodeDecodeError: <span class="string">'utf-8'</span> codec can<span class="string">'t decode byte 0xce in position 72: invalid continuation byte</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">During handling of the above exception, another exception occurred:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File "d:\home\ml\python\lib\site-packages\pip\basecommand.py", line 215, in main</span></span><br><span class="line"><span class="string">    status = self.run(options, args)</span></span><br><span class="line"><span class="string">  File "d:\home\ml\python\lib\site-packages\pip\commands\install.py", line 342, in run</span></span><br><span class="line"><span class="string">    prefix=options.prefix_path,</span></span><br><span class="line"><span class="string">  File "d:\home\ml\python\lib\site-packages\pip\req\req_set.py", line 784, in install</span></span><br><span class="line"><span class="string">    **kwargs</span></span><br><span class="line"><span class="string">  File "d:\home\ml\python\lib\site-packages\pip\req\req_install.py", line 878, in install</span></span><br><span class="line"><span class="string">    spinner=spinner,</span></span><br><span class="line"><span class="string">  File "d:\home\ml\python\lib\site-packages\pip\utils\__init__.py", line 676, in call_subprocess</span></span><br><span class="line"><span class="string">    line = console_to_str(proc.stdout.readline())</span></span><br><span class="line"><span class="string">  File "d:\home\ml\python\lib\site-packages\pip\compat\__init__.py", line 75, in console_to_str</span></span><br><span class="line"><span class="string">    return s.decode('</span>utf_8<span class="string">')</span></span><br><span class="line"><span class="string">UnicodeDecodeError: '</span>utf-8<span class="string">' codec can'</span>t decode byte 0xce <span class="keyword">in</span> position 72: invalid continuation byte</span><br></pre></td></tr></table></figure></p>
+<p>找到pip的安装目录（在虚拟环境目录python\Lib\site-packages\pip\compat\）中的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__init__.py</span><br></pre></td></tr></table></figure></p>
+<p>line 73   替换为:<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#return s.decode(sys.__stdout__.encoding)</span></span><br><span class="line">         <span class="keyword">return</span> s.decode(subprocess_encoding(), errors=<span class="string">"replace"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>并加入函数定义：<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">subprocess_encoding</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">if</span> WINDOWS:</span><br><span class="line">        <span class="keyword">if</span> sys.version_info &gt;= (<span class="number">3</span>, <span class="number">6</span>):</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"oem"</span></span><br><span class="line">        <span class="comment"># Prior to Python 3.6, sys.__stdout__ is opened</span></span><br><span class="line">        <span class="comment"># with the OEM code page (at least in the console</span></span><br><span class="line">        <span class="comment"># interpreter, which is what pip uses). This changed</span></span><br><span class="line">        <span class="comment"># in Python 3.6 to be UTF8, but we don't care as we</span></span><br><span class="line">        <span class="comment"># use the explicit "oem" encoding in that case via</span></span><br><span class="line">        <span class="comment"># the code above</span></span><br><span class="line">        <span class="keyword">return</span> sys.__stdout__.encoding</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">import</span> locale</span><br><span class="line">        <span class="comment"># Note that the use of getpreferredencoding here calls</span></span><br><span class="line">        <span class="comment"># setlocale, which isn't thread safe. This is OK, as we</span></span><br><span class="line">        <span class="comment"># never call this code in a multi-threaded context.</span></span><br><span class="line">        <span class="comment"># If thread safety was important, we could call</span></span><br><span class="line">        <span class="comment"># getpreferredencoding(False), but there are apparently</span></span><br><span class="line">        <span class="comment"># some systems where that will not give the correct answer.</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># We fall back to UTF8 if locale can't provide an answer,</span></span><br><span class="line">        <span class="comment"># as UTF8 is the most common encoding used nowadays.</span></span><br><span class="line">        <span class="keyword">return</span> locale.getpreferredencoding() <span class="keyword">or</span> <span class="string">"utf-8"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Keras切换不同的后端"><a href="#Keras切换不同的后端" class="headerlink" title="Keras切换不同的后端"></a>Keras切换不同的后端</h3><p>Keras运行一次后，会在 home 目录下创建 .keras 目录来保存自己的配置信息。<br>要切换不同的后端，修改其中的配置文件 keras.json。<br>使用tensorflow作为后端：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"floatx"</span>: <span class="string">"float32"</span>,</span><br><span class="line">    <span class="attr">"epsilon"</span>: <span class="number">1e-07</span>,</span><br><span class="line">    <span class="attr">"backend"</span>: <span class="string">"tensorflow"</span>,</span><br><span class="line">    <span class="attr">"image_data_format"</span>: <span class="string">"channels_last"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用 theano 作为后端：<br>···json<br>{<br>    “floatx”: “float32”,<br>    “epsilon”: 1e-07,<br>    “backend”: “theano”,<br>    “image_data_format”: “channels_last”<br>}<br><code>`</code></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/学习/" rel="tag"># 学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/04/08/BreasTouch-cross-complie/" rel="next" title="BreasTouch 在 Linux 下编译及交叉编译到 ARM">
+                <i class="fa fa-chevron-left"></i> BreasTouch 在 Linux 下编译及交叉编译到 ARM
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/04/26/MinGW-cross-complie/" rel="prev" title="基于 MinGW 搭建 Windows 下的交叉编译环境">
+                基于 MinGW 搭建 Windows 下的交叉编译环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Jim Bo</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">Artikel</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">Tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:Yunfeng.Bo@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#深度学习"><span class="nav-number">1.</span> <span class="nav-text">深度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开发环境准备"><span class="nav-number">1.1.</span> <span class="nav-text">开发环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">1.1.1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CUDA"><span class="nav-number">1.1.2.</span> <span class="nav-text">CUDA</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#目标平台："><span class="nav-number">1.1.2.1.</span> <span class="nav-text">目标平台：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下载："><span class="nav-number">1.1.2.2.</span> <span class="nav-text">下载：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cuDNN"><span class="nav-number">1.1.3.</span> <span class="nav-text">cuDNN</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下载"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">下载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorFlow"><span class="nav-number">1.1.4.</span> <span class="nav-text">TensorFlow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Theano"><span class="nav-number">1.1.5.</span> <span class="nav-text">Theano</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keras"><span class="nav-number">1.1.6.</span> <span class="nav-text">Keras</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PyTorch"><span class="nav-number">1.1.7.</span> <span class="nav-text">PyTorch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scikit-learn"><span class="nav-number">1.1.8.</span> <span class="nav-text">scikit-learn</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#摄像头和图像识别"><span class="nav-number">1.2.</span> <span class="nav-text">摄像头和图像识别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-opencv"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装 opencv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-torchvision"><span class="nav-number">1.2.2.</span> <span class="nav-text">安装 torchvision</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">1.3.</span> <span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装pyyaml时，出现错误（UnicodeDecodeError）"><span class="nav-number">1.3.1.</span> <span class="nav-text">安装pyyaml时，出现错误（UnicodeDecodeError）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keras切换不同的后端"><span class="nav-number">1.3.2.</span> <span class="nav-text">Keras切换不同的后端</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jim Bo</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

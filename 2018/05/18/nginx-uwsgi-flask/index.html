@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="阿里云云服务器配置 nginx + uwsgi + flask + supervisor基本配置阿里云主机操作系统：debian_9_02_64_20G 配置操作更新系统12sudo apt-get upgradesudo apt-get update 添加用户添加 web_admin1sudo adduser web_admin 修改/etc/sudoers，在其中添加用户 web_admin">
+<meta name="keywords" content="工作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里云云服务器配置 nginx + uwsgi + flask + supervisor">
+<meta property="og:url" content="https://yunfengbo.github.io/blog/2018/05/18/nginx-uwsgi-flask/index.html">
+<meta property="og:site_name" content="薄云峰的博客">
+<meta property="og:description" content="阿里云云服务器配置 nginx + uwsgi + flask + supervisor基本配置阿里云主机操作系统：debian_9_02_64_20G 配置操作更新系统12sudo apt-get upgradesudo apt-get update 添加用户添加 web_admin1sudo adduser web_admin 修改/etc/sudoers，在其中添加用户 web_admin">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-17T16:25:40.228Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阿里云云服务器配置 nginx + uwsgi + flask + supervisor">
+<meta name="twitter:description" content="阿里云云服务器配置 nginx + uwsgi + flask + supervisor基本配置阿里云主机操作系统：debian_9_02_64_20G 配置操作更新系统12sudo apt-get upgradesudo apt-get update 添加用户添加 web_admin1sudo adduser web_admin 修改/etc/sudoers，在其中添加用户 web_admin">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yunfengbo.github.io/blog/2018/05/18/nginx-uwsgi-flask/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>阿里云云服务器配置 nginx + uwsgi + flask + supervisor | 薄云峰的博客</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0198afdd6331d7904c7649687f816953";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">薄云峰的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">记录生活和工作的点滴</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Startseite</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/blog/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />Über</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags<span class="badge">3</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Kategorien<span class="badge">0</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archiv<span class="badge">6</span></a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yunfengbo.github.io/blog/blog/2018/05/18/nginx-uwsgi-flask/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jim Bo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="薄云峰的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">阿里云云服务器配置 nginx + uwsgi + flask + supervisor
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+
+              
+                
+              
+
+              <time title="Post created: 2018-05-18 00:24:42" itemprop="dateCreated datePublished" datetime="2018-05-18T00:24:42+08:00">2018-05-18</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="阿里云云服务器配置-nginx-uwsgi-flask-supervisor"><a href="#阿里云云服务器配置-nginx-uwsgi-flask-supervisor" class="headerlink" title="阿里云云服务器配置 nginx + uwsgi + flask + supervisor"></a>阿里云云服务器配置 nginx + uwsgi + flask + supervisor</h1><h2 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h2><p>阿里云主机操作系统：debian_9_02_64_20G</p>
+<h2 id="配置操作"><a href="#配置操作" class="headerlink" title="配置操作"></a>配置操作</h2><h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get upgrade</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+<h3 id="添加用户"><a href="#添加用户" class="headerlink" title="添加用户"></a>添加用户</h3><p>添加 web_admin<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser web_admin</span><br></pre></td></tr></table></figure></p>
+<p>修改/etc/sudoers，在其中添加用户 web_admin 的配置（关于 sudo 的配置这里不细说了）</p>
+<h3 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h3><p>必备软件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-setuptools</span><br><span class="line">sudo easy_install pip</span><br><span class="line">sudo pip install --upgrade pip</span><br><span class="line">sudo pip install virtualenv</span><br></pre></td></tr></table></figure></p>
+<p>可选软件（系统默认带了 vim，这里安装一个自己用着顺手的就行，后面有不少需要编辑文本的事情）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install emacs</span><br></pre></td></tr></table></figure></p>
+<h3 id="修改默认的-python-版本"><a href="#修改默认的-python-版本" class="headerlink" title="修改默认的 python 版本"></a>修改默认的 python 版本</h3><p>系统默认的 python 版本是 2.7，改为 python 3.5<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看默认的 python 版本</span></span><br><span class="line">python --version</span><br><span class="line">ls /usr/bin/python* -la</span><br></pre></td></tr></table></figure></p>
+<h4 id="基于用户修改"><a href="#基于用户修改" class="headerlink" title="基于用户修改"></a>基于用户修改</h4><p>修改 ~/.bashrc<br>添加：<br>alias python=’/usr/bin/python3.5’<br>重新加载 .bashrc:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">. ~/.bashrc</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装和配置-nginx"><a href="#安装和配置-nginx" class="headerlink" title="安装和配置 nginx"></a>安装和配置 nginx</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+<p>在阿里云主机上，上述安装会失败，需要修改 /etc/nginx/sites-available/default，将<br>listen [::]:80 default_server;<br>注释掉后，再次安装即可。</p>
+<p>此时，用浏览器打开，可以看到 nginx 的默认主页。</p>
+<p>Nginx是一个提供静态文件访问的web服务，然而，它不能直接执行托管Python应用程序，而uWSGI解决了这个问题。让我们先安装uWSGI，稍候再配置Nginx和uWSGI之间的交互。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-dev</span><br><span class="line">sudo apt-get install python3-dev</span><br></pre></td></tr></table></figure></p>
+<p>删除掉Nginx的默认配置文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rm /etc/nginx/sites-enabled/default</span><br></pre></td></tr></table></figure></p>
+<p>注意：如果你安装了其他版本的Nginx，默认配置文件可能在/etc/nginx/conf.d文件夹下。</p>
+<p>创建一个我们应用使用的新配置文件 /home/web_admin/server/nginx.conf ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">	listen      80;</span><br><span class="line">	server_name 47.94.139.151;</span><br><span class="line">	charset     utf-8;</span><br><span class="line">	client_max_body_size 75M;</span><br><span class="line">	</span><br><span class="line">	location / &#123;</span><br><span class="line">		root   /home/web_admin/server/wwwroot;</span><br><span class="line">		index  index.html index.htm;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	location /wx &#123;</span><br><span class="line">		include uwsgi_params;</span><br><span class="line">		uwsgi_pass   127.0.0.1:8006;  # 指向uwsgi 所应用的内部地址,所有请求将转发给uwsgi 处理</span><br><span class="line">		uwsgi_param UWSGI_PYHOME /home/web_admin/server/python; # 指向虚拟环境目录</span><br><span class="line">		uwsgi_param UWSGI_CHDIR  /home/web_admin/server; # 指向网站根目录</span><br><span class="line">		uwsgi_param PYTHONPATH   /home/web_admin/server;</span><br><span class="line">		uwsgi_param UWSGI_SCRIPT server:app; # 指定启动程序</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>创建一个链接，并重启 nginx：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /home/web_admin/server/nginx.conf /etc/nginx/conf.d/</span><br><span class="line">sudo /etc/init.d/nginx restart</span><br></pre></td></tr></table></figure></p>
+<p>此时，访问服务器的公网IP，会得到一个错误页面：502 Bad Gateway<br>这个错误是正常的，它代表Nginx已经使用了我们新创建的配置文件，但在链接到我们的Python应用网关uWSGI时遇到了问题</p>
+<h3 id="安装和配置-Flask-工程"><a href="#安装和配置-Flask-工程" class="headerlink" title="安装和配置 Flask 工程"></a>安装和配置 Flask 工程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/web_admin/server</span><br><span class="line"></span><br><span class="line">virtualenv -p /usr/bin/python3 python</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活</span></span><br><span class="line"><span class="built_in">source</span> ./python/bin/activate</span><br><span class="line"><span class="comment"># 另一种激活的方法</span></span><br><span class="line">. python/bin/activate</span><br><span class="line"><span class="comment"># 退出</span></span><br><span class="line"><span class="comment"># deactivate</span></span><br><span class="line"></span><br><span class="line">pip3 install uwsgi</span><br><span class="line">pip3 install flask</span><br></pre></td></tr></table></figure>
+<p>编写 uwsgi_config.ini 文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[uwsgi]</span><br><span class="line"># uwsgi 启动时所使用的地址与端口</span><br><span class="line">socket = 127.0.0.1:8006</span><br><span class="line"></span><br><span class="line">pythonpath = /home/web_admin/server/python</span><br><span class="line"></span><br><span class="line"># 指向网站目录</span><br><span class="line">chdir = /home/web_admin/server</span><br><span class="line"></span><br><span class="line"># python 启动程序文件</span><br><span class="line">wsgi-file = server.py</span><br><span class="line"></span><br><span class="line"># python 程序内用以启动的 application 变量名</span><br><span class="line">callable = app</span><br><span class="line"></span><br><span class="line"># 处理器数</span><br><span class="line">processes = 2</span><br><span class="line"></span><br><span class="line"># 线程数</span><br><span class="line">threads = 2</span><br><span class="line"></span><br><span class="line">#状态检测地址</span><br><span class="line">stats = 127.0.0.1:9191</span><br></pre></td></tr></table></figure></p>
+<p>运行 uwsgi :<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">. python/bin/activate</span><br><span class="line"></span><br><span class="line">./python/bin/uwsgi uwsgi_config.ini</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装和配置-supervisor"><a href="#安装和配置-supervisor" class="headerlink" title="安装和配置 supervisor"></a>安装和配置 supervisor</h3><p>Supervisor是用Python开发的一套通用的进程管理程序，能将一个普通的命令行进程变为后台daemon，并监控进程状态，异常退出时能自动重启。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install supervisor</span><br></pre></td></tr></table></figure></p>
+<p>在 /etc/supervisor/conf.d/ 目录下新建一个配置文件 server.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[program:my_flask]</span><br><span class="line"># 启动命令入口</span><br><span class="line">command=/home/web_admin/server/python/bin/uwsgi /home/web_admin/server/uwsgi_config.ini</span><br><span class="line"></span><br><span class="line"># 命令程序所在目录</span><br><span class="line">directory=/home/web_admin/server</span><br><span class="line">#运行命令的用户名</span><br><span class="line">user=root</span><br><span class="line">        </span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line">#日志地址</span><br><span class="line">stdout_logfile=/home/web_admin/server/logs/uwsgi_supervisor.log</span><br></pre></td></tr></table></figure></p>
+<p>启动服务<br>sudo service supervisor start<br>终止服务<br>sudo service supervisor stop</p>
+<p>至此，基本的环境就准备好了，在目录 /home/web_admin/server 中上传 Flask 项目，就可以了。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/工作/" rel="tag"># 工作</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/04/26/MinGW-cross-complie/" rel="next" title="基于 MinGW 搭建 Windows 下的交叉编译环境">
+                <i class="fa fa-chevron-left"></i> 基于 MinGW 搭建 Windows 下的交叉编译环境
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Jim Bo</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">Artikel</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">Tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:Yunfeng.Bo@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#阿里云云服务器配置-nginx-uwsgi-flask-supervisor"><span class="nav-number">1.</span> <span class="nav-text">阿里云云服务器配置 nginx + uwsgi + flask + supervisor</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本配置"><span class="nav-number">1.1.</span> <span class="nav-text">基本配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置操作"><span class="nav-number">1.2.</span> <span class="nav-text">配置操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#更新系统"><span class="nav-number">1.2.1.</span> <span class="nav-text">更新系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加用户"><span class="nav-number">1.2.2.</span> <span class="nav-text">添加用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装软件"><span class="nav-number">1.2.3.</span> <span class="nav-text">安装软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改默认的-python-版本"><span class="nav-number">1.2.4.</span> <span class="nav-text">修改默认的 python 版本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于用户修改"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">基于用户修改</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装和配置-nginx"><span class="nav-number">1.2.5.</span> <span class="nav-text">安装和配置 nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装和配置-Flask-工程"><span class="nav-number">1.2.6.</span> <span class="nav-text">安装和配置 Flask 工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装和配置-supervisor"><span class="nav-number">1.2.7.</span> <span class="nav-text">安装和配置 supervisor</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jim Bo</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
